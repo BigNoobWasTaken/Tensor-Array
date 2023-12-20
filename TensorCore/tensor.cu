@@ -618,6 +618,7 @@ arr_less_than<<<grid_dim, block_dim>>>(c_ptr, static_cast<const TYPE*>(base_a.da
 			devices::Device this_cuda{ devices::CUDA };
 			cuda_status = cudaGetDevice(&this_cuda.index);
 			cudaDeviceProp cu_dev_prop;
+			cuda_status = cudaGetDeviceProperties(&cu_dev_prop, this_cuda.index);
 			TensorBase base_bool_value = bool_value.get_buffer().change_device(this_cuda);
 			TensorBase base_true_value = true_value.get_buffer().change_device(this_cuda);
 			TensorBase base_false_value = false_value.get_buffer().change_device(this_cuda);
