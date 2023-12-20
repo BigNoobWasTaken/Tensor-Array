@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{31c07fe7-d9e7-4f13-b317-cb1565b9654c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header">
+      <UniqueIdentifier>{d1666028-3aa3-4a91-a409-3aa35c99bb29}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="layer_impl.hh">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="tensor.hh">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="tensorbase.hh">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="devices.hh">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="data_type_wrapper.hh">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="layer_holder.hh">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="sequential.hh">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="linear.hh">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="normalization.hh">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="recurrent.hh">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="layer_utility.hh">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="convolution.hh">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="transformer.hh">
+      <Filter>Header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="tensor.cu">
+      <Filter>Source</Filter>
+    </CudaCompile>
+    <CudaCompile Include="main.cpp" />
+    <CudaCompile Include="kernel.cu">
+      <Filter>Source</Filter>
+    </CudaCompile>
+    <CudaCompile Include="tensor_convolution.cu">
+      <Filter>Source</Filter>
+    </CudaCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="layer_impl.cc">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="tensor.cc">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="tensorbase.cc">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="devices.cc">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="data_type_wrapper.cc">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="sequential.cc">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="linear.cc">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="normalization.cc">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="recurrent.cc">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="layer_utility.cc">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="tensor_convolution.cc">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="convolution.cc">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="transformer.cc">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
