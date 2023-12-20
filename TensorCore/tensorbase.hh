@@ -254,6 +254,7 @@ namespace ai
             TensorBase(const std::type_info&, const std::initializer_list<unsigned int>&, const void* = nullptr, const devices::Device & = devices::default_dev, const devices::Device & = devices::default_dev);
             TensorBase(const std::type_info&, const std::vector<unsigned int>&, const void* = nullptr, const devices::Device& = devices::default_dev, const devices::Device& = devices::default_dev);
             TensorBase(const TensorBase&);
+            TensorBase(const TensorBase&, const devices::Device&);
             TensorBase(TensorBase&&) = default;
             TensorBase& operator=(const TensorBase&);
             TensorBase operator[](unsigned int) const;
@@ -262,6 +263,7 @@ namespace ai
             const void* data() const;
             size_t data_size() const;
             const devices::Device& get_device() const;
+            TensorBase change_device(const devices::Device&) const;
             bool has_tensor() const;
             void swap(TensorBase&);
             void save(const char* dir) const;

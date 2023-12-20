@@ -61,6 +61,11 @@ namespace ai
         {
         }
 
+        TensorBase::TensorBase(const TensorBase& other, const devices::Device& other_device) :
+            TensorBase(other.type(), other.shape(), other.data(), other.get_device(), other_device)
+        {
+        }
+
         TensorBase& TensorBase::operator=(const TensorBase& other)
         {
             TensorBase temp(other);
@@ -98,6 +103,11 @@ namespace ai
         const devices::Device& TensorBase::get_device() const
         {
             return this->instance->get_device();
+        }
+
+        TensorBase TensorBase::change_device(const devices::Device& dev) const
+        {
+            return TensorBase(*this, dev);
         }
 
         bool TensorBase::has_tensor() const
