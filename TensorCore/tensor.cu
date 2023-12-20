@@ -554,17 +554,13 @@ arr_less_than<<<grid_dim, block_dim>>>(c_ptr, static_cast<const TYPE*>(base_a.da
 				&& b.get_buffer().type() == typeid(bool)
 			);
 			cudaError cuda_status;
-			bool* a_ptr;
-			bool* b_ptr;
 			bool* c_ptr;
 			devices::Device this_cuda{ devices::CUDA };
 			cuda_status = cudaGetDevice(&this_cuda.index);
 			cudaDeviceProp cu_dev_prop;
 			cuda_status = cudaGetDeviceProperties(&cu_dev_prop, this_cuda.index);
-			cuda_status = cudaMalloc(&a_ptr, a.get_buffer().data_size());
-			cuda_status = cudaMalloc(&b_ptr, b.get_buffer().data_size());
-			cuda_status = cudaMemcpy(a_ptr, a.get_buffer().data(), a.get_buffer().data_size(), cudaMemcpyHostToDevice);
-			cuda_status = cudaMemcpy(b_ptr, b.get_buffer().data(), b.get_buffer().data_size(), cudaMemcpyHostToDevice);
+			TensorBase base_a = a.get_buffer().change_device(this_cuda);
+			TensorBase base_b = b.get_buffer().change_device(this_cuda);
 			std::size_t c_size = std::max
 			(
 				a.get_buffer().data_size() / get_sizeof_type(a.get_buffer().type()),
@@ -573,11 +569,9 @@ arr_less_than<<<grid_dim, block_dim>>>(c_ptr, static_cast<const TYPE*>(base_a.da
 			cuda_status = cudaMalloc(&c_ptr, c_size);
 			dim3 block_dim(cu_dev_prop.maxThreadsDim[0]);
 			dim3 grid_dim(c_size / block_dim.x + (c_size % block_dim.x ? 1U : 0U));
-			arr_logical_or << <grid_dim, block_dim >> > (c_ptr, a_ptr, b_ptr, c_size);
+			arr_logical_or << <grid_dim, block_dim >> > (c_ptr, static_cast<const bool*>(base_a.data()), static_cast<const bool*>(base_b.data()), c_size);
 			cuda_status = cudaDeviceSynchronize();
 			TensorBase other_buf(typeid(bool), a.get_buffer().shape(), c_ptr, this_cuda);
-			cuda_status = cudaFree(a_ptr);
-			cuda_status = cudaFree(b_ptr);
 			cuda_status = cudaFree(c_ptr);
 			return other_buf;
 		}
@@ -586,21 +580,18 @@ arr_less_than<<<grid_dim, block_dim>>>(c_ptr, static_cast<const TYPE*>(base_a.da
 		{
 			assert(this->get_buffer().type() == typeid(bool));
 			cudaError cuda_status;
-			bool* in_ptr;
 			bool* out_ptr;
 			devices::Device this_cuda{ devices::CUDA };
 			cuda_status = cudaGetDevice(&this_cuda.index);
 			cudaDeviceProp cu_dev_prop;
 			cuda_status = cudaGetDeviceProperties(&cu_dev_prop, this_cuda.index);
-			cuda_status = cudaMalloc(&in_ptr, this->get_buffer().data_size());
-			cuda_status = cudaMemcpy(in_ptr, this->get_buffer().data(), this->get_buffer().data_size(), cudaMemcpyHostToDevice);
+			TensorBase base_of_this = this->get_buffer().change_device(this_cuda);
 			cuda_status = cudaMalloc(&out_ptr, this->get_buffer().data_size());
 			dim3 block_dim(cu_dev_prop.maxThreadsDim[0]);
 			dim3 grid_dim(this->get_buffer().data_size() / block_dim.x + 1U);
-			arr_logical_not << < grid_dim, block_dim >> > (out_ptr, in_ptr, this->get_buffer().data_size());
+			arr_logical_not << < grid_dim, block_dim >> > (out_ptr, static_cast<const bool*>(base_of_this.data()), this->get_buffer().data_size());
 			cuda_status = cudaDeviceSynchronize();
 			TensorBase other_buf(typeid(bool), this->get_buffer().shape(), out_ptr, this_cuda);
-			cuda_status = cudaFree(in_ptr);
 			cuda_status = cudaFree(out_ptr);
 			return other_buf;
 		}
@@ -610,7 +601,8 @@ arr_less_than<<<grid_dim, block_dim>>>(c_ptr, static_cast<const TYPE*>(base_a.da
 			assert(
 				equal_dim_size(bool_value.get_buffer(), true_value.get_buffer()) &&
 				equal_dim_size(bool_value.get_buffer(), false_value.get_buffer()) &&
-				bool_value.get_buffer().type() == typeid(bool)
+				bool_value.get_buffer().type() == typeid(bool) &&
+				true_value.get_buffer().type() == false_value.get_buffer().type()
 			);
 			std::vector<std::pair<Tensor, Derivation>> temp;
 			if (is_derive)
@@ -622,37 +614,27 @@ arr_less_than<<<grid_dim, block_dim>>>(c_ptr, static_cast<const TYPE*>(base_a.da
 			}
 			cudaError cuda_status;
 			TensorBase other_buf;
-			bool* ptr_bool;
-			void* ptr_true;
-			void* ptr_false;
 			void* ptr_out;
 			devices::Device this_cuda{ devices::CUDA };
 			cuda_status = cudaGetDevice(&this_cuda.index);
 			cudaDeviceProp cu_dev_prop;
-			cuda_status = cudaGetDeviceProperties(&cu_dev_prop, this_cuda.index);
-			cuda_status = cudaMalloc(&ptr_bool, bool_value.get_buffer().data_size());
-			cuda_status = cudaMalloc(&ptr_true, true_value.get_buffer().data_size());
-			cuda_status = cudaMalloc(&ptr_false, false_value.get_buffer().data_size());
-			cuda_status = cudaMemcpy(ptr_bool, bool_value.get_buffer().data(), bool_value.get_buffer().data_size(), cudaMemcpyHostToDevice);
-			cuda_status = cudaMemcpy(ptr_true, true_value.get_buffer().data(), true_value.get_buffer().data_size(), cudaMemcpyHostToDevice);
-			cuda_status = cudaMemcpy(ptr_false, false_value.get_buffer().data(), false_value.get_buffer().data_size(), cudaMemcpyHostToDevice);
-			std::size_t c_size = bool_value.get_buffer().data_size();
+			TensorBase base_bool_value = bool_value.get_buffer().change_device(this_cuda);
+			TensorBase base_true_value = true_value.get_buffer().change_device(this_cuda);
+			TensorBase base_false_value = false_value.get_buffer().change_device(this_cuda);
+			std::size_t c_size = base_bool_value.data_size();
 			dim3 block_dim(cu_dev_prop.maxThreadsDim[0]);
 			dim3 grid_dim(c_size / block_dim.x + (c_size % block_dim.x ? 1U : 0U));
 #define ADD_CODE(TYPE) \
 if(true_value.get_buffer().type() == typeid(TYPE) && false_value.get_buffer().type() == typeid(TYPE)) \
 { \
 cuda_status = cudaMalloc(&ptr_out, c_size * sizeof(TYPE));\
-array_condition<<<grid_dim, block_dim>>>(static_cast<TYPE*>(ptr_out), c_size, ptr_bool, static_cast<TYPE*>(ptr_true), static_cast<TYPE*>(ptr_false)); \
+array_condition<<<grid_dim, block_dim>>>(static_cast<TYPE*>(ptr_out), c_size, static_cast<const bool*>(base_bool_value.data()), static_cast<const TYPE*>(base_true_value.data()), static_cast<const TYPE*>(base_false_value.data())); \
 cuda_status = cudaDeviceSynchronize(); \
 other_buf = TensorBase(typeid(TYPE), bool_value.get_buffer().shape(), ptr_out, this_cuda); \
 }
 			LOOP(USING_DATA_TYPE);
 #undef ADD_CODE
 			cuda_status = cudaFree(ptr_out);
-			cuda_status = cudaFree(ptr_bool);
-			cuda_status = cudaFree(ptr_true);
-			cuda_status = cudaFree(ptr_false);
 			return Tensor(std::move(other_buf), std::move(temp));
 		}
 
@@ -667,17 +649,13 @@ other_buf = TensorBase(typeid(TYPE), bool_value.get_buffer().shape(), ptr_out, t
 			}
 			cudaError cuda_status;
 			TensorBase other_buf;
-			void* a_ptr;
-			void* b_ptr;
 			void* c_ptr;
 			devices::Device this_cuda{ devices::CUDA };
 			cuda_status = cudaGetDevice(&this_cuda.index);
 			cudaDeviceProp cu_dev_prop;
 			cuda_status = cudaGetDeviceProperties(&cu_dev_prop, this_cuda.index);
-			cuda_status = cudaMalloc(&a_ptr, a.get_buffer().data_size());
-			cuda_status = cudaMalloc(&b_ptr, b.get_buffer().data_size());
-			cuda_status = cudaMemcpy(a_ptr, a.get_buffer().data(), a.get_buffer().data_size(), cudaMemcpyHostToDevice);
-			cuda_status = cudaMemcpy(b_ptr, b.get_buffer().data(), b.get_buffer().data_size(), cudaMemcpyHostToDevice);
+			TensorBase base_a = a.get_buffer().change_device(this_cuda);
+			TensorBase base_b = b.get_buffer().change_device(this_cuda);
 			std::size_t c_size = std::max
 			(
 				a.get_buffer().data_size() / get_sizeof_type(a.get_buffer().type()),
@@ -689,14 +667,12 @@ other_buf = TensorBase(typeid(TYPE), bool_value.get_buffer().shape(), ptr_out, t
 #define ADD_CODE(TYPE) \
 if(a.get_buffer().type() == typeid(TYPE) && b.get_buffer().type() == typeid(TYPE)) \
 { \
-sum_2_arr<<<grid_dim, block_dim>>>(static_cast<TYPE*>(c_ptr), static_cast<TYPE*>(a_ptr), static_cast<TYPE*>(b_ptr), c_size); \
+sum_2_arr<<<grid_dim, block_dim>>>(static_cast<TYPE*>(c_ptr), static_cast<const TYPE*>(base_a.data()), static_cast<const TYPE*>(base_b.data()), c_size); \
 cuda_status = cudaDeviceSynchronize(); \
 other_buf = TensorBase(typeid(TYPE), a.get_buffer().shape(), c_ptr, this_cuda); \
 }
 			LOOP(USING_DATA_TYPE);
 #undef ADD_CODE
-			cuda_status = cudaFree(a_ptr);
-			cuda_status = cudaFree(b_ptr);
 			cuda_status = cudaFree(c_ptr);
 			return Tensor(std::move(other_buf), std::move(temp));
 		}
@@ -712,17 +688,13 @@ other_buf = TensorBase(typeid(TYPE), a.get_buffer().shape(), c_ptr, this_cuda); 
 			}
 			cudaError cuda_status;
 			TensorBase other_buf;
-			void* a_ptr;
-			void* b_ptr;
 			void* c_ptr;
 			devices::Device this_cuda{ devices::CUDA };
 			cuda_status = cudaGetDevice(&this_cuda.index);
 			cudaDeviceProp cu_dev_prop;
 			cuda_status = cudaGetDeviceProperties(&cu_dev_prop, this_cuda.index);
-			cuda_status = cudaMalloc(&a_ptr, a.get_buffer().data_size());
-			cuda_status = cudaMalloc(&b_ptr, b.get_buffer().data_size());
-			cuda_status = cudaMemcpy(a_ptr, a.get_buffer().data(), a.get_buffer().data_size(), cudaMemcpyHostToDevice);
-			cuda_status = cudaMemcpy(b_ptr, b.get_buffer().data(), b.get_buffer().data_size(), cudaMemcpyHostToDevice);
+			TensorBase base_a = a.get_buffer().change_device(this_cuda);
+			TensorBase base_b = b.get_buffer().change_device(this_cuda);
 			std::size_t c_size = std::max
 			(
 				a.get_buffer().data_size() / get_sizeof_type(a.get_buffer().type()),
@@ -734,14 +706,12 @@ other_buf = TensorBase(typeid(TYPE), a.get_buffer().shape(), c_ptr, this_cuda); 
 #define ADD_CODE(TYPE) \
 if(a.get_buffer().type() == typeid(TYPE) && b.get_buffer().type() == typeid(TYPE)) \
 { \
-mul_2_arr<<<grid_dim, block_dim>>>(static_cast<TYPE*>(c_ptr), static_cast<TYPE*>(a_ptr), static_cast<TYPE*>(b_ptr), c_size); \
+mul_2_arr<<<grid_dim, block_dim>>>(static_cast<TYPE*>(c_ptr), static_cast<const TYPE*>(base_a.data()), static_cast<const TYPE*>(base_b.data()), c_size); \
 cuda_status = cudaDeviceSynchronize(); \
 other_buf = TensorBase(typeid(TYPE), a.get_buffer().shape(), c_ptr, this_cuda); \
 }
 			LOOP(USING_DATA_TYPE);
 #undef ADD_CODE
-			cuda_status = cudaFree(a_ptr);
-			cuda_status = cudaFree(b_ptr);
 			cuda_status = cudaFree(c_ptr);
 			return Tensor(std::move(other_buf), std::move(temp));
 		}
@@ -757,17 +727,13 @@ other_buf = TensorBase(typeid(TYPE), a.get_buffer().shape(), c_ptr, this_cuda); 
 			}
 			cudaError cuda_status;
 			TensorBase other_buf;
-			void* a_ptr;
-			void* b_ptr;
 			void* c_ptr;
 			devices::Device this_cuda{ devices::CUDA };
 			cuda_status = cudaGetDevice(&this_cuda.index);
 			cudaDeviceProp cu_dev_prop;
 			cuda_status = cudaGetDeviceProperties(&cu_dev_prop, this_cuda.index);
-			cuda_status = cudaMalloc(&a_ptr, a.get_buffer().data_size());
-			cuda_status = cudaMalloc(&b_ptr, b.get_buffer().data_size());
-			cuda_status = cudaMemcpy(a_ptr, a.get_buffer().data(), a.get_buffer().data_size(), cudaMemcpyHostToDevice);
-			cuda_status = cudaMemcpy(b_ptr, b.get_buffer().data(), b.get_buffer().data_size(), cudaMemcpyHostToDevice);
+			TensorBase base_a = a.get_buffer().change_device(this_cuda);
+			TensorBase base_b = b.get_buffer().change_device(this_cuda);
 			std::size_t c_size = std::max
 			(
 				a.get_buffer().data_size() / get_sizeof_type(a.get_buffer().type()),
@@ -779,14 +745,12 @@ other_buf = TensorBase(typeid(TYPE), a.get_buffer().shape(), c_ptr, this_cuda); 
 #define ADD_CODE(TYPE) \
 if(a.get_buffer().type() == typeid(TYPE) && b.get_buffer().type() == typeid(TYPE)) \
 { \
-div_2_arr<<<grid_dim, block_dim>>>(static_cast<TYPE*>(c_ptr), static_cast<TYPE*>(a_ptr), static_cast<TYPE*>(b_ptr), c_size); \
+div_2_arr<<<grid_dim, block_dim>>>(static_cast<TYPE*>(c_ptr), static_cast<const TYPE*>(base_a.data()), static_cast<const TYPE*>(base_b.data()), c_size); \
 cuda_status = cudaDeviceSynchronize(); \
 other_buf = TensorBase(typeid(TYPE), a.get_buffer().shape(), c_ptr, this_cuda); \
 }
 			LOOP(USING_DATA_TYPE);
 #undef ADD_CODE
-			cuda_status = cudaFree(a_ptr);
-			cuda_status = cudaFree(b_ptr);
 			cuda_status = cudaFree(c_ptr);
 			return Tensor(std::move(other_buf), std::move(temp));
 		}
@@ -802,17 +766,13 @@ other_buf = TensorBase(typeid(TYPE), a.get_buffer().shape(), c_ptr, this_cuda); 
 			}
 			cudaError cuda_status;
 			TensorBase other_buf;
-			void* a_ptr;
-			void* b_ptr;
 			void* c_ptr;
 			devices::Device this_cuda{ devices::CUDA };
 			cuda_status = cudaGetDevice(&this_cuda.index);
 			cudaDeviceProp cu_dev_prop;
 			cuda_status = cudaGetDeviceProperties(&cu_dev_prop, this_cuda.index);
-			cuda_status = cudaMalloc(&a_ptr, a.get_buffer().data_size());
-			cuda_status = cudaMalloc(&b_ptr, b.get_buffer().data_size());
-			cuda_status = cudaMemcpy(a_ptr, a.get_buffer().data(), a.get_buffer().data_size(), cudaMemcpyHostToDevice);
-			cuda_status = cudaMemcpy(b_ptr, b.get_buffer().data(), b.get_buffer().data_size(), cudaMemcpyHostToDevice);
+			TensorBase base_a = a.get_buffer().change_device(this_cuda);
+			TensorBase base_b = b.get_buffer().change_device(this_cuda);
 			std::size_t c_size = std::max
 			(
 				a.get_buffer().data_size() / get_sizeof_type(a.get_buffer().type()),
@@ -824,14 +784,12 @@ other_buf = TensorBase(typeid(TYPE), a.get_buffer().shape(), c_ptr, this_cuda); 
 #define ADD_CODE(TYPE) \
 if(a.get_buffer().type() == typeid(TYPE) && b.get_buffer().type() == typeid(TYPE)) \
 { \
-pow_arr<<<block_dim, grid_dim>>>(static_cast<TYPE*>(c_ptr), static_cast<TYPE*>(a_ptr), static_cast<TYPE*>(b_ptr), c_size); \
+pow_arr<<<block_dim, grid_dim>>>(static_cast<TYPE*>(c_ptr), static_cast<const TYPE*>(base_a.data()), static_cast<const TYPE*>(base_b.data()), c_size); \
 cuda_status = cudaDeviceSynchronize(); \
 other_buf = TensorBase(typeid(TYPE), a.get_buffer().shape(), c_ptr, this_cuda); \
 }
 			LOOP(USING_DATA_TYPE);
 #undef ADD_CODE
-			cuda_status = cudaFree(a_ptr);
-			cuda_status = cudaFree(b_ptr);
 			cuda_status = cudaFree(c_ptr);
 			return Tensor(std::move(other_buf), std::move(temp));
 		}
