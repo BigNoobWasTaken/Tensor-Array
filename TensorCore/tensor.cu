@@ -1115,6 +1115,7 @@ sigmoid_arr<<<grid_dim, block_dim>>>(static_cast<TYPE*>(out_ptr), static_cast<co
 				cudaStat = cudaFree(in_ptr);
 				return Tensor(std::move(other_buf), std::move(temp));
 			}
+			blasStat = cublasDestroy(blasHandle);
 			throw std::exception("Not same type.");
 		}
 
