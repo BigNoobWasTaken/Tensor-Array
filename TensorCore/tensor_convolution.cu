@@ -1,10 +1,10 @@
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 #include <cassert>
-#ifndef FRIEND_MATMUL
-#define FRIEND_MATMUL
+#ifndef TENSOR_CONTENT
+#define TENSOR_CONTENT
 #include "tensor.hh"
-#undef FRIEND_MATMUL
+#undef TENSOR_CONTENT
 #endif
 
 #define USING_DATA_TYPE (int)(unsigned int)(float)

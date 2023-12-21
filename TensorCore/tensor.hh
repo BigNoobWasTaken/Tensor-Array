@@ -27,7 +27,7 @@ namespace ai
 	{
         extern CUDA_ML_API bool use_grad;
 
-#ifdef FRIEND_MATMUL
+#ifdef TENSOR_CONTENT
         void* create_mem_101(std::size_t s, const void* dat);
         class DataBuffer
         {
@@ -158,7 +158,7 @@ namespace ai
             Tensor reshape(const std::vector<unsigned int>&) const;
             Tensor tensor_cast(const std::type_info&) const;
             Tensor conv_padding(const dimension&) const;
-#ifdef FRIEND_MATMUL
+#ifdef TENSOR_CONTENT
             friend Tensor derive_transpose(const Tensor&, const Tensor&, bool, const DataBuffer&);
 
             friend Tensor derive_reshape_cast(const Tensor&, const Tensor&, bool, const DataBuffer&);
@@ -167,7 +167,7 @@ namespace ai
             std::pair<Tensor, Tensor> max(unsigned char = 0) const;
             std::pair<Tensor, Tensor> min(unsigned char = 0) const;
             friend CUDA_ML_API std::pair<Tensor, Tensor> tensor_broadcasting(const Tensor&, const Tensor&, unsigned char = 0, unsigned char = 0);
-#ifdef FRIEND_MATMUL
+#ifdef TENSOR_CONTENT
             friend CUDA_ML_API Tensor add_dim(const std::vector<Tensor>&);
 #endif
             bool has_tensor() const;
@@ -215,7 +215,7 @@ namespace ai
             Tensor sigmoid() const;
 
             Tensor log() const;
-#ifdef FRIEND_MATMUL
+#ifdef TENSOR_CONTENT
             friend CUDA_ML_API Tensor tensor_rand(const std::initializer_list<unsigned int>&, unsigned int = std::rand());
 
             friend Tensor add(const Tensor&, const Tensor&, bool);
@@ -253,7 +253,7 @@ namespace ai
             friend CUDA_ML_API std::ostream& operator<<(std::ostream&, const Tensor&);
 
         private:
-#ifdef FRIEND_MATMUL
+#ifdef TENSOR_CONTENT
             friend class TensorContentDerivation;
             friend class TensorContentGradient;
             friend struct Derivation;
@@ -273,7 +273,7 @@ namespace ai
             Tensor convolution_convert(const ConvolutionParameter&);
             Tensor(const TensorBase&, const std::vector<std::pair<Tensor, Derivation>>&);
             Tensor(TensorBase&&, std::vector<std::pair<Tensor, Derivation>>&&);
-#endif // FRIEND_MATMUL
+#endif // TENSOR_CONTENT
             struct TensorContent;
             Tensor(const std::shared_ptr<TensorContent>&);
             Tensor(std::shared_ptr<TensorContent>&&);
@@ -333,14 +333,14 @@ namespace ai
 #define ADD_CODE(TYPE) CUDA_ML_API Tensor values(const std::initializer_list<unsigned int>&, TYPE);
         LOOP(USING_DATA_TYPE);
 #undef ADD_CODE
-#ifndef FRIEND_MATMUL
+#ifndef TENSOR_CONTENT
         CUDA_ML_API Tensor tensor_rand(const std::initializer_list<unsigned int>&, unsigned int = std::rand());
         CUDA_ML_API Tensor add_dim(const std::vector<Tensor>&);
 #endif
         CUDA_ML_API const std::type_info& comparison_type(const std::type_info&, const std::type_info&);
         CUDA_ML_API Tensor tensor_rand(const std::vector<unsigned int>&, unsigned int = std::rand());
 
-#ifdef FRIEND_MATMUL
+#ifdef TENSOR_CONTENT
         class Derivation
         {
         private:

@@ -3,11 +3,11 @@
 #include <forward_list>
 #include <ostream>
 #include "data_type_wrapper.hh"
-#ifndef FRIEND_MATMUL
-#define FRIEND_MATMUL
+#ifndef TENSOR_CONTENT
+#define TENSOR_CONTENT
 #include "tensor.hh"
-#undef FRIEND_MATMUL
-#endif // !FRIEND_MATMUL
+#undef TENSOR_CONTENT
+#endif // !TENSOR_CONTENT
 #include <unordered_set>
 
 #define USING_DATA_TYPE (char)(int)(unsigned char)(unsigned int)(float)(double)

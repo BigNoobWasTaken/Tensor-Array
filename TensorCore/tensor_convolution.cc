@@ -1,8 +1,8 @@
 #include <cassert>
-#ifndef FRIEND_MATMUL
-#define FRIEND_MATMUL
+#ifndef TENSOR_CONTENT
+#define TENSOR_CONTENT
 #include "tensor.hh"
-#undef FRIEND_MATMUL
+#undef TENSOR_CONTENT
 #endif
 
 namespace ai
