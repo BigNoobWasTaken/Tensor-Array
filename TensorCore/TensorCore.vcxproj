@@ -94,9 +94,6 @@
     <CudaCompile Include="tensor_convolution.cu" />
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="kernel.cu" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="convolution.cc" />
     <ClCompile Include="data_type_wrapper.cc" />
     <ClCompile Include="devices.cc" />

@@ -233,6 +233,10 @@ namespace ai
         public:
             constexpr TensorBase() = default;
 
+            /**
+             * \brief Copying TensorArray into TensorBase.
+             * \param arr
+             */
             template <typename T, unsigned int ... sz>
             constexpr TensorBase(const TensorArray<T, sz...>& arr):
                 instance(std::make_unique<TensorArrayStorage<T, sz...>>(arr))
@@ -242,6 +246,10 @@ namespace ai
                     dynamic_type_size.insert(std::make_pair(test, sizeof(T)));
             }
 
+            /**
+             * \brief Forwarding TensorArray into TensorBase.
+             * \param arr
+             */
             template <typename T, unsigned int ... sz>
             constexpr TensorBase(TensorArray<T, sz...>&& arr) :
                 instance(std::make_unique<TensorArrayStorage<T, sz...>>(std::forward<TensorArray<T, sz...>>(arr)))

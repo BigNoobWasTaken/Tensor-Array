@@ -54,9 +54,6 @@
       <Filter>Source</Filter>
     </CudaCompile>
     <CudaCompile Include="main.cpp" />
-    <CudaCompile Include="kernel.cu">
-      <Filter>Source</Filter>
-    </CudaCompile>
     <CudaCompile Include="tensor_convolution.cu">
       <Filter>Source</Filter>
     </CudaCompile>
