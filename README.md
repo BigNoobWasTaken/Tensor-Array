@@ -28,7 +28,7 @@ int main()
 
 ```
 
-That code is:
+That code is wrapping for:
 
 ```C++
 int main()
