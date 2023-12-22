@@ -107,6 +107,7 @@
     <ClCompile Include="sequential.cc" />
     <ClCompile Include="tensor.cc" />
     <ClCompile Include="tensorbase.cc" />
+    <ClCompile Include="tensor_blas.cc" />
     <ClCompile Include="tensor_convolution.cc" />
     <ClCompile Include="transformer.cc" />
   </ItemGroup>

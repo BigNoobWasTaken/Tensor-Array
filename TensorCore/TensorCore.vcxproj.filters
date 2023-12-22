@@ -98,5 +98,8 @@
     <ClCompile Include="transformer.cc">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="tensor_blas.cc">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
