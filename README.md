@@ -21,7 +21,7 @@ int main()
     {{ 9, 10, 11, 12 }},
     {{ 13, 14, 15, 16 }},
   }};
-  return 0
+  return 0;
 }
 
 ```
@@ -45,7 +45,7 @@ int main()
   ai::value::Tensor example_tensor_1(example_tensor_array);
   ai::value::Tensor example_tensor_2(example_tensor_array_scalar);
   ai::value::Tensor example_tensor_sum = example_tensor_1 + example_tensor_2;
-  return 0
+  return 0;
 }
 
 ```
