@@ -9,7 +9,7 @@ Build your own neural network models with this library.
 
 
 ## Why this reposity named `Tensor-Array`
-I created a template struct that named `TensorArray` is a multi-dimensional array wrapper.
+We created a template struct that named `TensorArray`. That struct is a multi-dimensional array wrapper.
 
 ```C++
 #include "tensorbase.hh"
@@ -28,6 +28,22 @@ int main()
 
 ```
 
+That code is
+
+```C++
+int main()
+{
+  float example_tensor_array[4][4] =
+  {
+    { 1, 2, 3, 4 },
+    { 5, 6, 7, 8 },
+    { 9, 10, 11, 12 },
+    { 13, 14, 15, 16 },
+  };
+  return 0;
+}
+
+```
 
 
 ## Install
