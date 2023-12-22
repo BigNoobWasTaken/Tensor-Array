@@ -33,10 +33,9 @@ int main()
 ## Install
 
 ### Windows
-
-Install [Microsoft Visual Studio](https://visualstudio.microsoft.com/)
-
-Install [CUDA](https://developer.nvidia.com/cuda-downloads)
+1. Install [Microsoft Visual Studio](https://visualstudio.microsoft.com/).
+2. Install [CUDA](https://developer.nvidia.com/cuda-downloads).
+3. Open `TensorCore.sln` and build.
 
 
 
