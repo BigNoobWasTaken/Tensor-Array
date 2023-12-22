@@ -1,7 +1,6 @@
 # Tensor-Array
 
 ![C++](https://img.shields.io/badge/C%2B%2B-17-blue)
-[![openssf](https://www.bestpractices.dev/badge_static/15)](https://www.bestpractices.dev/en/projects/8229)
 
 A C++ Tensor library that use to work with machine learning or deep learning project.
 
