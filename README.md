@@ -26,6 +26,12 @@ int main()
 
 ```
 
+## Install
+
+### Windows
+Install [Microsoft Visual Studio](https://visualstudio.microsoft.com/)
+Install [CUDA](https://developer.nvidia.com/cuda-downloads)
+
 ## The `Tensor` class.
 The `Tensor` class is a storage that store value and calculate the tensor.
 
