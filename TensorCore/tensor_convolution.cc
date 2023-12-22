@@ -5,7 +5,7 @@
 #undef TENSOR_CONTENT
 #endif
 
-namespace ai
+namespace tensor_array
 {
     namespace value
     {

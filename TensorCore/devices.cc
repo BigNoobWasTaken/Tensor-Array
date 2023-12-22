@@ -4,7 +4,7 @@
 #include <mutex>
 #include <cuda_runtime.h>
 
-namespace ai
+namespace tensor_array
 {
 	namespace devices
 	{
@@ -88,16 +88,16 @@ namespace ai
 	}
 }
 
-void* operator new(size_t count, ai::devices::Device dev)
+void* operator new(size_t count, tensor_array::devices::Device dev)
 {
 	int temp;
 	void* m_alloc_dat;
 	switch (dev.dev_t)
 	{
-	case ai::devices::CPU:
+	case tensor_array::devices::CPU:
 		m_alloc_dat = std::malloc(count);
 		break;
-	case ai::devices::CUDA:
+	case tensor_array::devices::CUDA:
 	{
 		cudaError_t cuda_status = cudaGetDevice(&temp);
 		cuda_status = cudaSetDevice(dev.index);
@@ -112,16 +112,16 @@ void* operator new(size_t count, ai::devices::Device dev)
 	return m_alloc_dat;
 }
 
-void* operator new(size_t count, ai::devices::Device dev, void* stream)
+void* operator new(size_t count, tensor_array::devices::Device dev, void* stream)
 {
 	int temp;
 	void* m_alloc_dat;
 	switch (dev.dev_t)
 	{
-	case ai::devices::CPU:
+	case tensor_array::devices::CPU:
 		m_alloc_dat = std::malloc(count);
 		break;
-	case ai::devices::CUDA:
+	case tensor_array::devices::CUDA:
 	{
 		cudaError_t cuda_status = cudaGetDevice(&temp);
 		cuda_status = cudaSetDevice(dev.index);
@@ -136,15 +136,15 @@ void* operator new(size_t count, ai::devices::Device dev, void* stream)
 	return m_alloc_dat;
 }
 
-void operator delete(void* data, ai::devices::Device dev)
+void operator delete(void* data, tensor_array::devices::Device dev)
 {
 	int temp;
 	switch (dev.dev_t)
 	{
-	case ai::devices::CPU:
+	case tensor_array::devices::CPU:
 		std::free(data);
 		break;
-	case ai::devices::CUDA:
+	case tensor_array::devices::CUDA:
 	{
 		cudaGetDevice(&temp);
 		cudaSetDevice(dev.index);
@@ -158,15 +158,15 @@ void operator delete(void* data, ai::devices::Device dev)
 	}
 }
 
-void operator delete(void* data, ai::devices::Device dev, void* stream)
+void operator delete(void* data, tensor_array::devices::Device dev, void* stream)
 {
 	int temp;
 	switch (dev.dev_t)
 	{
-	case ai::devices::CPU:
+	case tensor_array::devices::CPU:
 		std::free(data);
 		break;
-	case ai::devices::CUDA:
+	case tensor_array::devices::CUDA:
 	{
 		cudaGetDevice(&temp);
 		cudaSetDevice(dev.index);

@@ -1,7 +1,7 @@
 #include "transformer.hh"
 #include "layer_utility.hh"
 
-namespace ai
+namespace tensor_array
 {
 	namespace layers
 	{

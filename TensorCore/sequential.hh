@@ -1,7 +1,7 @@
 #include "layer_holder.hh"
 #pragma once
 
-namespace ai
+namespace tensor_array
 {
 	namespace layers
 	{

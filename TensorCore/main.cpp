@@ -8,8 +8,8 @@
 #include "convolution.hh"
 #include <iostream>
 #define NAME(x) #x
-using namespace ai::layers;
-using namespace ai::value;
+using namespace tensor_array::layers;
+using namespace tensor_array::value;
 
 class BeginModelImpl : public TensorCalculateLayerImpl
 {
@@ -26,8 +26,8 @@ using BeginModel = LayerHolder<BeginModelImpl>;
 
 int main(int argc, char* argv[])
 {
-    ai::devices::device_CUDA_get_info();
-    Tensor ones1001 = ai::layers::tanh(ai::value::tensor_rand({ 8, 1, 1, }));
+    tensor_array::devices::device_CUDA_get_info();
+    Tensor ones1001 = tensor_array::layers::tanh(tensor_array::value::tensor_rand({ 8, 1, 1, }));
     Conv1D conv(dimension{ 1 }, 1);
     auto test0010 = conv(ones1001);
     std::cout << "test conv2d = " << test0010 << std::endl;
@@ -46,14 +46,14 @@ int main(int argc, char* argv[])
         {3, 4},
         {5, 6}
     };
-    sizeof ai::value::TensorBase;
-    ai::value::TensorArray<float, 2U, 3U> a001{ 1, 2, 3, 4, 5, 6 };
-    ai::value::TensorArray<float, 3U, 2U> a002{ 1, 2, 3, 4, 5, 6 };
+    sizeof tensor_array::value::TensorBase;
+    tensor_array::value::TensorArray<float, 2U, 3U> a001{ 1, 2, 3, 4, 5, 6 };
+    tensor_array::value::TensorArray<float, 3U, 2U> a002{ 1, 2, 3, 4, 5, 6 };
     sizeof a001;
-    //ai::value::TensorArray<int> a003 = { 1 };
+    //tensor_array::value::TensorArray<int> a003 = { 1 };
     std::array<std::array<int, 3>, 3> a123{ 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-    ai::value::TensorBase a(a001);
-    ai::value::TensorBase b(a002);
+    tensor_array::value::TensorBase a(a001);
+    tensor_array::value::TensorBase b(a002);
     Tensor a1(a);
     Tensor b1(b);
     std::printf("a1 = %f\n", float(a1[0][0]));
@@ -74,25 +74,25 @@ int main(int argc, char* argv[])
     std::cout << "c1 = " << c1.mean(0) << std::endl;
     std::cout << "a1 grad = " << a1.get_grad() << std::endl;
 
-    //ai.random_weights();
+    //tensor_array.random_weights();
     std::printf("%s\n", NAME(1 + 1 = 3));
 
     // My new machine learning. (Tensor structure)
     // Look like Python neural network libraries (TensorFlow, Keras, PyTorch,...) but its C++.
     // C++ is faster than Python.
-    Tensor ones = ai::value::tensor_rand({ 8, 8, 73 });
+    Tensor ones = tensor_array::value::tensor_rand({ 8, 8, 73 });
     ones.save("test/nothing.dat");
-    ones = ai::value::tensor_file_load("begin.dat");
+    ones = tensor_array::value::tensor_file_load("begin.dat");
     ones.save("begin.dat");
-    ones = ai::value::tensor_file_load("begin.dat");
+    ones = tensor_array::value::tensor_file_load("begin.dat");
     //ones.save("begin.dat");
     ones = ones.reshape({ 1, 4672 });
-    Tensor ones1 = ai::value::tensor_rand({ 64 });
+    Tensor ones1 = tensor_array::value::tensor_rand({ 64 });
     std::printf("ones = %f\n", float(ones[0][0]));
     BeginModel model_1;
     model_1->load_data("test1/test2");
     auto test055 = model_1(ones);
-    Tensor n1 = ai::value::add_dim({ model_1(ones), model_1(ones), model_1(ones), });
+    Tensor n1 = tensor_array::value::add_dim({ model_1(ones), model_1(ones), model_1(ones), });
     n1.multithread_derive() = true;
     Tensor n2 = n1.loss(ones1);
     n2.calc_grad();

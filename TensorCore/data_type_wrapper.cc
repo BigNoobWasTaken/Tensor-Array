@@ -1,7 +1,7 @@
 #include <typeinfo>
 #include "data_type_wrapper.hh"
 
-namespace ai
+namespace tensor_array
 {
 	namespace datatype
 	{

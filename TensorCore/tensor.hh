@@ -21,7 +21,7 @@
 #define END(...) END_(__VA_ARGS__)
 #define END_(...) __VA_ARGS__##_END
 
-namespace ai
+namespace tensor_array
 {
 	namespace value
 	{
@@ -99,8 +99,8 @@ namespace ai
             ~Tensor();
 
             friend class WeakTensor;
-            friend struct std::hash<ai::value::Tensor>;
-            friend struct std::equal_to<ai::value::Tensor>;
+            friend struct std::hash<tensor_array::value::Tensor>;
+            friend struct std::equal_to<tensor_array::value::Tensor>;
 
             /**
              * \brief This class can iterate copy child tensor by index and derivate to parent tensor,
@@ -373,20 +373,20 @@ namespace ai
 }
 
 template<>
-struct std::hash<ai::value::Tensor>
+struct std::hash<tensor_array::value::Tensor>
 {
-    inline std::size_t operator()(const ai::value::Tensor& t) const
+    inline std::size_t operator()(const tensor_array::value::Tensor& t) const
     {
-        return std::hash<std::shared_ptr<ai::value::Tensor::TensorContent>>()(t.tensor_data);
+        return std::hash<std::shared_ptr<tensor_array::value::Tensor::TensorContent>>()(t.tensor_data);
     }
 };
 
 template<>
-struct std::equal_to<ai::value::Tensor>
+struct std::equal_to<tensor_array::value::Tensor>
 {
-    inline std::size_t operator()(const ai::value::Tensor& a, const ai::value::Tensor& b) const
+    inline std::size_t operator()(const tensor_array::value::Tensor& a, const tensor_array::value::Tensor& b) const
     {
-        return std::equal_to<std::shared_ptr<ai::value::Tensor::TensorContent>>()(a.tensor_data, b.tensor_data);
+        return std::equal_to<std::shared_ptr<tensor_array::value::Tensor::TensorContent>>()(a.tensor_data, b.tensor_data);
     }
 };
 

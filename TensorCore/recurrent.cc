@@ -1,6 +1,6 @@
 #include "recurrent.hh"
 
-namespace ai
+namespace tensor_array
 {
 	namespace layers
 	{

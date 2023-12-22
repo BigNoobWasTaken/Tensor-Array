@@ -1,7 +1,7 @@
 #include "layer_holder.hh"
 #pragma once
 
-namespace ai
+namespace tensor_array
 {
 	namespace layers
 	{
@@ -22,7 +22,7 @@ namespace ai
         inline void test()
         {
             Linear test1(1);
-            test1(ai::value::Tensor());
+            test1(tensor_array::value::Tensor());
         }
 	}
 }

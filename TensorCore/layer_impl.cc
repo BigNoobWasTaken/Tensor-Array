@@ -2,7 +2,7 @@
 #include <iostream>
 #include "layer_impl.hh"
 
-namespace ai
+namespace tensor_array
 {
     namespace layers
     {
@@ -13,7 +13,7 @@ namespace ai
             for (auto& it : this->map_tensor)
             {
                 if (!it.second->has_tensor()) continue;
-                const ai::value::TensorBase& temp = it.second->get_buffer();
+                const tensor_array::value::TensorBase& temp = it.second->get_buffer();
                 value::Tensor temp_grad = it.second->get_grad();
                 if (temp_grad.has_tensor())
                 {
@@ -30,7 +30,7 @@ namespace ai
             for (auto& it : this->map_tensor)
             {
                 std::string next_dir = (str + '/' + it.first);
-                value::Tensor test = ai::value::tensor_file_load(next_dir.c_str());
+                value::Tensor test = tensor_array::value::tensor_file_load(next_dir.c_str());
                 if (test.has_tensor())
                     *it.second = test;
             }

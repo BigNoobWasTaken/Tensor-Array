@@ -25,7 +25,7 @@
 #define END(...) END_(__VA_ARGS__)
 #define END_(...) __VA_ARGS__##_END
 
-namespace ai
+namespace tensor_array
 {
     namespace value
     {

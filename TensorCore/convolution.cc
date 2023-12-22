@@ -1,6 +1,6 @@
 #include "convolution.hh"
 
-namespace ai
+namespace tensor_array
 {
     namespace layers
     {
@@ -10,7 +10,7 @@ namespace ai
             bias_shape.insert(bias_shape.end(), filter);
             constexpr unsigned int one = 1U;
             bias_shape.insert(bias_shape.end(), dim, one);
-            return ai::value::values(bias_shape, 0.f);
+            return tensor_array::value::values(bias_shape, 0.f);
         }
 
         value::dimension padding_resize(const value::dimension& padding, unsigned char dim)

@@ -1,6 +1,6 @@
 #include "normalization.hh"
 
-namespace ai
+namespace tensor_array
 {
 	namespace layers
 	{
@@ -24,7 +24,7 @@ namespace ai
         value::Tensor NormalizationImpl::calculate(const value::Tensor& input)
         {
             value::Tensor normal;
-            if (ai::value::use_grad)
+            if (tensor_array::value::use_grad)
             {
                 value::Tensor temp_mean = input.mean(this->dims_mean);
                 value::Tensor temp_variance = input.variance(this->dims_mean);

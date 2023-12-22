@@ -10,7 +10,7 @@
 #define CUDA_ML_API __declspec(dllimport)
 #endif
 
-namespace ai
+namespace tensor_array
 {
     namespace layers
     {

@@ -2,7 +2,7 @@
 #include "layer_utility.hh"
 #pragma once
 
-namespace ai
+namespace tensor_array
 {
     namespace layers
     {

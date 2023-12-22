@@ -2,7 +2,7 @@
 
 #pragma once
 
-namespace ai
+namespace tensor_array
 {
     namespace layers
     {

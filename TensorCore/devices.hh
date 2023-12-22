@@ -6,7 +6,7 @@
 #define CUDA_ML_API __declspec(dllimport)
 #endif
 
-namespace ai
+namespace tensor_array
 {
 	namespace devices
 	{
@@ -32,12 +32,12 @@ namespace ai
 	}
 }
 
-void* operator new(size_t, ai::devices::Device);
+void* operator new(size_t, tensor_array::devices::Device);
 
-void* operator new(size_t, ai::devices::Device, void*);
+void* operator new(size_t, tensor_array::devices::Device, void*);
 
-void operator delete(void*, ai::devices::Device);
+void operator delete(void*, tensor_array::devices::Device);
 
-void operator delete(void*, ai::devices::Device, void*);
+void operator delete(void*, tensor_array::devices::Device, void*);
 
 #undef CUDA_ML_API
