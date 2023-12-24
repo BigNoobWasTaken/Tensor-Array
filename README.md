@@ -6,8 +6,10 @@ A C++ Tensor library that use to work with machine learning or deep learning pro
 
 Build your own neural network models with this library.
 
-## Why this reposity named `Tensor-Array`
-I created a template struct that named `TensorArray` is a multi-dimensional array wrapper.
+
+
+## Why this repository named `Tensor-Array`
+We created a template struct that named `TensorArray`. That struct is a multi-dimensional array wrapper.
 
 ```C++
 #include "tensorbase.hh"
@@ -25,6 +27,33 @@ int main()
 }
 
 ```
+
+That code is wrapping for:
+
+```C++
+int main()
+{
+  float example_tensor_array[4][4] =
+  {
+    { 1, 2, 3, 4 },
+    { 5, 6, 7, 8 },
+    { 9, 10, 11, 12 },
+    { 13, 14, 15, 16 },
+  };
+  return 0;
+}
+
+```
+
+
+## Install
+
+### Windows
+1. Install [Microsoft Visual Studio](https://visualstudio.microsoft.com/).
+2. Install [CUDA](https://developer.nvidia.com/cuda-downloads).
+3. Open `TensorCore.sln` and build.
+
+
 
 ## The `Tensor` class.
 The `Tensor` class is a storage that store value and calculate the tensor.
@@ -49,3 +78,5 @@ int main()
 }
 
 ```
+
+
