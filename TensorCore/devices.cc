@@ -10,6 +10,11 @@ namespace tensor_array
 	{
 		thread_local Device default_dev = DEVICE_CPU_0;
 
+		Device& local_device()
+		{
+			return default_dev;
+		}
+
 		void device_memcpy(void* dst, Device dst_dev, const void* src, Device src_dev, size_t count)
 		{
 			int temp;

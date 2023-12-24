@@ -16,19 +16,21 @@ namespace tensor_array
 			CUDA
 		};
 
-		extern thread_local struct Device
+		struct Device
 		{
 			DeviceType dev_t;
 			int index;
-		} default_dev;
+		};
 
 		constexpr Device DEVICE_CPU_0{ CPU,0 };
+
+		CUDA_ML_API Device& local_device();
 
 		void device_memcpy(void*, Device, const void*, Device, size_t);
 
 		void device_memcpy(void*, Device, const void*, Device, size_t, void*);
 
-		void CUDA_ML_API device_CUDA_get_info();
+		CUDA_ML_API void device_CUDA_get_info();
 	}
 }
 

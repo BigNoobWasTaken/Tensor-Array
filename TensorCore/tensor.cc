@@ -297,7 +297,7 @@ temp_check_data_type = TEMP(temp.first) < TEMP(temp_tensor);
         Tensor add_dim(const std::vector<Tensor>& list)
         {
             std::vector<std::pair<Tensor, Derivation>> derive_list;
-            void* content = operator new(list.size() * list[0].get_buffer().data_size(), devices::default_dev);
+            void* content = operator new(list.size() * list[0].get_buffer().data_size(), devices::local_device());
             std::vector<unsigned int> last_sizes = list[0].get_buffer().shape();
             const std::type_info& last_type = list[0].get_buffer().type();
             for (unsigned int i = 0; i < list.size(); i++)
@@ -305,7 +305,7 @@ temp_check_data_type = TEMP(temp.first) < TEMP(temp_tensor);
                 if (std::vector<unsigned int>(list[i].get_buffer().shape()) != last_sizes && list[i].get_buffer().type() != last_type) throw 0;
                 derive_list.push_back(std::make_pair(list[i], Derivation(Tensor(), derive_dim_added, false, i)));
                 void* temp_ptr = (void*)(unsigned long long(content) + (i * list[i].get_buffer().data_size()));
-                devices::device_memcpy(temp_ptr, devices::default_dev, list[i].get_buffer().data(), list[i].get_buffer().get_device(), list[i].get_buffer().data_size());
+                devices::device_memcpy(temp_ptr, devices::local_device(), list[i].get_buffer().data(), list[i].get_buffer().get_device(), list[i].get_buffer().data_size());
             }
             last_sizes.insert(last_sizes.begin(), list.size());
             TensorBase other_buf(list[0].get_buffer().type(), last_sizes, content);

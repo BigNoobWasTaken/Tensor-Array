@@ -259,8 +259,8 @@ namespace tensor_array
                     dynamic_type_size.insert(std::make_pair(test, sizeof(T)));
             }
 
-            TensorBase(const std::type_info&, const std::initializer_list<unsigned int>&, const void* = nullptr, const devices::Device & = devices::default_dev, const devices::Device & = devices::default_dev);
-            TensorBase(const std::type_info&, const std::vector<unsigned int>&, const void* = nullptr, const devices::Device& = devices::default_dev, const devices::Device& = devices::default_dev);
+            TensorBase(const std::type_info&, const std::initializer_list<unsigned int>&, const void* = nullptr, const devices::Device & = devices::local_device(), const devices::Device & = devices::local_device());
+            TensorBase(const std::type_info&, const std::vector<unsigned int>&, const void* = nullptr, const devices::Device& = devices::local_device(), const devices::Device& = devices::local_device());
             TensorBase(const TensorBase&);
             TensorBase(const TensorBase&, const devices::Device&);
             TensorBase(TensorBase&&) = default;
