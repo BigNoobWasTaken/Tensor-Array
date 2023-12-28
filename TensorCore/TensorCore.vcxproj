@@ -54,6 +54,7 @@
       <TargetMachinePlatform>64</TargetMachinePlatform>
       <GenerateRelocatableDeviceCode>true</GenerateRelocatableDeviceCode>
       <AdditionalOptions>--default-stream per-thread %(AdditionalOptions)</AdditionalOptions>
+      <CodeGeneration>compute_75,sm_75</CodeGeneration>
     </CudaCompile>
     <CudaLink />
   </ItemDefinitionGroup>
@@ -71,6 +72,7 @@
       <TargetMachinePlatform>64</TargetMachinePlatform>
       <GenerateRelocatableDeviceCode>true</GenerateRelocatableDeviceCode>
       <AdditionalOptions>--default-stream per-thread %(AdditionalOptions)</AdditionalOptions>
+      <CodeGeneration>compute_75,sm_75</CodeGeneration>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -89,7 +91,6 @@
     <ClInclude Include="tensor.hh" />
     <ClInclude Include="tensorbase.hh" />
     <ClInclude Include="transformer.hh" />
-    <CudaCompile Include="main.cpp" />
     <CudaCompile Include="tensor.cu" />
     <CudaCompile Include="tensor_convolution.cu" />
   </ItemGroup>

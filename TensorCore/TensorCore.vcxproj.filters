@@ -53,7 +53,6 @@
     <CudaCompile Include="tensor.cu">
       <Filter>Source</Filter>
     </CudaCompile>
-    <CudaCompile Include="main.cpp" />
     <CudaCompile Include="tensor_convolution.cu">
       <Filter>Source</Filter>
     </CudaCompile>

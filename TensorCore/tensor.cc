@@ -304,7 +304,7 @@ temp_check_data_type = TEMP(temp.first) < TEMP(temp_tensor);
             {
                 if (std::vector<unsigned int>(list[i].get_buffer().shape()) != last_sizes && list[i].get_buffer().type() != last_type) throw 0;
                 derive_list.push_back(std::make_pair(list[i], Derivation(Tensor(), derive_dim_added, false, i)));
-                void* temp_ptr = (void*)(unsigned long long(content) + (i * list[i].get_buffer().data_size()));
+                void* temp_ptr = reinterpret_cast<void*>(reinterpret_cast<unsigned long long>(content) + (i * list[i].get_buffer().data_size()));
                 devices::device_memcpy(temp_ptr, devices::local_device(), list[i].get_buffer().data(), list[i].get_buffer().get_device(), list[i].get_buffer().data_size());
             }
             last_sizes.insert(last_sizes.begin(), list.size());

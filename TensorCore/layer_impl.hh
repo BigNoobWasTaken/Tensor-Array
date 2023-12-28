@@ -18,7 +18,7 @@ namespace tensor_array
         {
         private:
             bool is_running = false;
-            template <class T>
+            template <class>
             friend class LayerHolder;
         protected:
             std::unordered_map<std::string, value::Tensor*> map_tensor;
@@ -36,11 +36,13 @@ namespace tensor_array
         };
 
         template <typename Return, typename ... Args>
-        struct CalculateStruct
+        class CalculateStruct
         {
-            template <class T>
+        public:
+            template <class>
             friend class LayerHolder;
             virtual ~CalculateStruct() = default;
+        protected:
             virtual void init_value(Args ...) {}
             virtual Return calculate(Args ...) = 0;
         };

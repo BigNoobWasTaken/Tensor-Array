@@ -12,7 +12,6 @@ namespace tensor_array
 		private:
 			std::shared_ptr<T> layer_ptr;
 		public:
-			friend class LayerHolder;
 			static_assert(std::is_base_of_v<LayerImpl, T>, "Not base");
 
 			template <class Derived_Class>
@@ -47,14 +46,14 @@ namespace tensor_array
 		template<class T>
 		template<class Derived_Class>
 		inline LayerHolder<T>::LayerHolder(const LayerHolder<Derived_Class>& layer_hold) :
-			layer_ptr(layer_hold.layer_ptr)
+			layer_ptr(layer_hold.get_shared())
 		{
 		}
 
 		template<class T>
 		template<class Derived_Class>
 		inline LayerHolder<T>::LayerHolder(LayerHolder<Derived_Class>&& layer_hold) :
-			layer_ptr(std::move(layer_hold.layer_ptr))
+			layer_ptr(std::move(layer_hold.get_shared()))
 		{
 		}
 
