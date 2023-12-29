@@ -35,15 +35,16 @@ namespace tensor_array
 		value::Tensor MultiHeadAttentionImpl::calculate(const value::Tensor& input_q, const value::Tensor& input_k, const value::Tensor& input_v, const value::Tensor &mask)
 		{
 			value::Tensor temp_q = this->w_q(input_q);
-			value::Tensor temp_k = this->w_q(input_k);
-			value::Tensor temp_v = this->w_q(input_v);
-			temp_q = temp_q.reshape({ temp_q.get_buffer().shape().begin()[0], temp_q.get_buffer().shape().end()[-1], this->n_head, this->d_model / this->n_head }).transpose(1, 2);
-			temp_k = temp_k.reshape({ temp_k.get_buffer().shape().begin()[0], temp_k.get_buffer().shape().end()[-1], this->n_head, this->d_model / this->n_head }).transpose(1, 2);
-			temp_v = temp_v.reshape({ temp_v.get_buffer().shape().begin()[0], temp_v.get_buffer().shape().end()[-1], this->n_head, this->d_model / this->n_head }).transpose(1, 2);
+			value::Tensor temp_k = this->w_k(input_k);
+			value::Tensor temp_v = this->w_v(input_v);
+			temp_q = temp_q.reshape({ temp_q.get_buffer().shape().begin()[0], temp_q.get_buffer().shape().begin()[1], this->n_head, this->d_model / this->n_head }).transpose(1, 2);
+			temp_k = temp_k.reshape({ temp_k.get_buffer().shape().begin()[0], temp_k.get_buffer().shape().begin()[1], this->n_head, this->d_model / this->n_head }).transpose(1, 2);
+			temp_v = temp_v.reshape({ temp_v.get_buffer().shape().begin()[0], temp_v.get_buffer().shape().begin()[1], this->n_head, this->d_model / this->n_head }).transpose(1, 2);
 
 			auto attention_output = scaled_dot_product_attention(temp_q, temp_k, temp_v, mask);
 
-			attention_output = attention_output.transpose(1, 2).reshape({ attention_output.get_buffer().shape().begin()[0], this->d_model, this->d_model });
+			attention_output = attention_output.transpose(1, 2);
+			attention_output = attention_output.reshape({ attention_output.get_buffer().shape().begin()[0], attention_output.get_buffer().shape().begin()[1], this->d_model });
 
 			return this->w_o(attention_output);
 		}
