@@ -48,6 +48,9 @@
     <ClInclude Include="transformer.hh">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="attention.hh">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="tensor.cu">
@@ -94,10 +97,13 @@
     <ClCompile Include="convolution.cc">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="transformer.cc">
+    <ClCompile Include="attention.cc">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="tensor_blas.cc">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="transformer.cc">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

@@ -76,6 +76,7 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="attention.hh" />
     <ClInclude Include="convolution.hh" />
     <ClInclude Include="data_type_wrapper.hh" />
     <ClInclude Include="devices.hh" />
@@ -110,6 +111,7 @@
     <ClCompile Include="tensorbase.cc" />
     <ClCompile Include="tensor_blas.cc" />
     <ClCompile Include="tensor_convolution.cc" />
+    <ClCompile Include="attention.cc" />
     <ClCompile Include="transformer.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
