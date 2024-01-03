@@ -812,7 +812,7 @@ temp_check_data_type = TEMP(temp.first) < TEMP(temp_tensor);
 #define ADD_CODE(TEMP)\
 if (tensor_out.get_buffer().type() == typeid(TEMP))\
 out_stream << TEMP(tensor_out);
-                LOOP(USING_DATA_TYPE);
+                LOOP((bool)USING_DATA_TYPE);
 #undef ADD_CODE
             }
             return out_stream;
